@@ -16,7 +16,7 @@ class password {
     * The X option is automatically included.
     * @example hotstring := [':?*:/pass.generate'] ; Typing /pass.generate launches GUI
     */
-    static hotstring := [':?*:/password.generate']
+    static hotstring := [':?*:/password']
     
     /**
     * Assign any number of hotkeys
