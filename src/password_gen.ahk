@@ -12,13 +12,18 @@ class password {
     
     /**
     * Assign any number of hotstrings
-    * @property {Array} hotstring - An array of strings 
+    * @property {Array} hotstring - An array of strings in hotstring format  
+    * The X option is automatically included.
+    * @example hotstring := [':?*:/pass.generate'] ; Typing /pass.generate launches GUI
     */
-    static hotstring := [':?*X:/password', ':?*X:password.generate']
+    static hotstring := [':?*:/password.generate']
+    
     /**
-    * 
+    * Assign any number of hotkeys
+    * @property {Array} hotkey - An array of strings in hotkey format
+    * @example hotkey := ['*F1', '*+F2'] ; F1 and Shift+F2 launch GUI
     */
-    static hotkey := ['*F1', '*+F2']
+    static hotkey := []
     
     ; Base character sets
     static char_set :=
@@ -68,10 +73,10 @@ class password {
             while (pass.Length < size)
                 pass.InsertAt(Random(1, pass.Length), bank[Random(1, bank.Length)])
         
-        ; If no password was generated
+        ; If no password was generated, set string to error message
         if !pass.Length
             str := 'No characters to choose from.'
-        ; Else randomize result
+        ; Else randomly remove characters to create password string
         Else while pass.Length
             str .= pass.RemoveAt(Random(1, pass.Length))
         
@@ -175,9 +180,9 @@ class password {
         opt := 'xm yp+' (margin + gb_os_bottom) ' w' gb_charset_w ' r1 Section'
         goo.AddGroupBox(opt, 'Character Sets:')
         for name, _ in this.char_set
-            opt := (A_Index = 1 ? 'xs+' gb_os_x : 'x+' margin) . ' ys+' (gb_os_y + cb_pad)
-                . ' Checked'
-            ,con := goo.AddCheckbox(opt ' w' cb_charset_w ' r1', name)
+            opt := (A_Index = 1 ? 'xs+' gb_os_x : 'x+' margin) ' ys+' (gb_os_y + cb_pad)
+                . ' Checked w' cb_charset_w ' r1'
+            ,con := goo.AddCheckbox(opt , name)
             ,con.name := name
             ,con.SetFont('s10 Bold')
             ,con.OnEvent('Click', update_setting)
