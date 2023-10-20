@@ -51,7 +51,7 @@ class password {
         if this.hotkey.Length
             for _, hk in this.hotkey
                 Hotkey(hk, (*) => this.make_gui())
-        HotIf((*) => this.gui)
+        HotIf((*) => this.gui_exists())
         ,Hotkey('*~Escape', (*) => this.destroy_gui())
         ,HotIf()
     }
@@ -219,13 +219,15 @@ class password {
     
     ; Saves last pos and then destroys GUI
     static destroy_gui() {
-        if WinExist('ahk_id ' this.gui.Hwnd)
+        if this.gui_exists()
             dhw := DetectHiddenWindows(0)
             ,this.save_gui_pos()
             ,this.gui.Destroy()
-            ,this.gui := ''
+            ,this.DeleteProp('gui')
             ,DetectHiddenWindows(dhw)
     }
+    
+    static gui_exists() => this.HasProp('gui')
     
     ; Fires when mouse movement is detected on GUI
     static WM_MOUSEMOVE(wParam, lParam, msg, hwnd) {
